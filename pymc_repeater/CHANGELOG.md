@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.12
+
+- Sync upstream `pymcdev/pymc-repeater:dev` to `4f278f1`
+- Upstream diff: https://github.com/pyMC-dev/pyMC_Repeater/compare/5b95be3db5b245607fd2d2f6d401a27eefaa4004...4f278f121f8c915a14f831b1f34af30aab520d72
+- Included upstream commits:
+  - Add Southern California radio preset
+  - feat(presets): expose bundled broker presets via GET /api/broker_presets
+  - Merge pull request #245 from dmduran12/broker_template-UIsync
+  - Merge pull request #243 from dmduran12/patch-1
+
 ## 0.1.11
 
 - Track upstream `pymcdev/pymc-repeater:dev` automatically via GitHub Actions
