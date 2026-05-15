@@ -28,6 +28,7 @@ from Home Assistant's main `/config` folder.
 2. Install the `pyMC Repeater Dev` add-on.
 3. Open your Home Assistant file editor, such as Studio Code Server.
 4. Edit the add-on config file `config.yaml` in the add-on's own config folder.
+   You are looking for a folder matching `addon_config/*_pymc_repeater`.
 5. Start the add-on and open the web UI on port `8000`.
 
 ## Configuration
