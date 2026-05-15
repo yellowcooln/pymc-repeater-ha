@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+- Add commented `pymc_tcp` example to the default configuration template
+- Document that comments in the Configuration tab must stay inside `config_yaml`
+
 ## 0.1.1
 
 - Add editable `config_yaml` field in the Home Assistant Configuration tab

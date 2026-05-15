@@ -50,6 +50,12 @@ The bundled starter config is aimed at an SX1262 SPI radio. At minimum, review:
 If you are using a KISS modem instead of SPI radio hardware, switch
 `radio_type` to `kiss` and configure the `kiss` section instead.
 
+When editing in the Home Assistant `Configuration` tab, remember that you are
+editing the add-on options document. Any comment lines you want to keep inside
+the repeater config must stay inside the `config_yaml` block. In practice,
+that means keeping them indented under the `config_yaml` value instead of at
+the far left edge of the editor.
+
 ## Hardware Access
 
 This add-on currently runs with `full_access: true` and AppArmor disabled.
