@@ -8,4 +8,5 @@ This repository contains a Home Assistant add-on for running
 ### [`pymc_repeater`](./pymc_repeater)
 
 Runs the development-tracking `pymcdev/pymc-repeater:dev` image inside Home
-Assistant with persistent config and data storage.
+Assistant with persistent config and data storage under
+`/config/pymc-repeater/`.

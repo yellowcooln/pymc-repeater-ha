@@ -1,115 +1,30 @@
 #!/bin/sh
 set -eu
 
-PERSISTENT_CONFIG_DIR="/config"
+ADDON_CONFIG_ROOT="/config"
+PERSISTENT_CONFIG_DIR="${ADDON_CONFIG_ROOT}/pymc-repeater"
 PERSISTENT_CONFIG_FILE="${PERSISTENT_CONFIG_DIR}/config.yaml"
 TEMPLATE_CONFIG_FILE="/usr/share/pymc-repeater/config.yaml.example"
 RUNTIME_CONFIG_DIR="/etc/pymc_repeater"
 DATA_DIR="/var/lib/pymc_repeater"
-UI_OPTIONS_FILE="/data/options.json"
-SUPERVISOR_ADDON_INFO_URL="http://supervisor/addons/self/info"
+LEGACY_CONFIG_FILE="${ADDON_CONFIG_ROOT}/config.yaml"
+LEGACY_IDENTITY_FILE="${ADDON_CONFIG_ROOT}/identity.key"
 CONFIG_SOURCE="unknown"
 
+mkdir -p "${ADDON_CONFIG_ROOT}"
 mkdir -p "${PERSISTENT_CONFIG_DIR}"
 mkdir -p "${DATA_DIR}"
 
-if [ -f "${UI_OPTIONS_FILE}" ]; then
-    echo "[pymc-repeater-ha] found add-on options file at ${UI_OPTIONS_FILE}"
-    TEMP_CONFIG_FILE="$(mktemp)"
-    python3 - "${UI_OPTIONS_FILE}" "${TEMP_CONFIG_FILE}" <<'PY'
-import json
-import pathlib
-import sys
-
-options_path = pathlib.Path(sys.argv[1])
-output_path = pathlib.Path(sys.argv[2])
-
-try:
-    options = json.loads(options_path.read_text(encoding="utf-8"))
-except FileNotFoundError:
-    raise SystemExit(0)
-
-config_yaml = options.get("config_yaml", "")
-if not isinstance(config_yaml, str) or not config_yaml.strip():
-    print("[pymc-repeater-ha] add-on options did not contain a non-empty config_yaml value")
-    raise SystemExit(0)
-
-output_path.write_text(config_yaml.rstrip("\n") + "\n", encoding="utf-8")
-PY
-
-    if [ -s "${TEMP_CONFIG_FILE}" ]; then
-        if [ ! -f "${PERSISTENT_CONFIG_FILE}" ]; then
-            cp "${TEMP_CONFIG_FILE}" "${PERSISTENT_CONFIG_FILE}"
-            echo "[pymc-repeater-ha] created ${PERSISTENT_CONFIG_FILE} from add-on options"
-            CONFIG_SOURCE="add-on options"
-        elif ! cmp -s "${TEMP_CONFIG_FILE}" "${PERSISTENT_CONFIG_FILE}"; then
-            cp "${TEMP_CONFIG_FILE}" "${PERSISTENT_CONFIG_FILE}"
-            echo "[pymc-repeater-ha] updated ${PERSISTENT_CONFIG_FILE} from add-on options"
-            CONFIG_SOURCE="add-on options"
-        else
-            CONFIG_SOURCE="add-on options"
-        fi
-    fi
-
-    rm -f "${TEMP_CONFIG_FILE}"
-else
-    echo "[pymc-repeater-ha] no add-on options file present at ${UI_OPTIONS_FILE}"
+if [ ! -f "${PERSISTENT_CONFIG_FILE}" ] && [ -f "${LEGACY_CONFIG_FILE}" ]; then
+    cp "${LEGACY_CONFIG_FILE}" "${PERSISTENT_CONFIG_FILE}"
+    echo "[pymc-repeater-ha] migrated legacy config from ${LEGACY_CONFIG_FILE} to ${PERSISTENT_CONFIG_FILE}"
+    CONFIG_SOURCE="migrated legacy config"
 fi
 
-if [ "${CONFIG_SOURCE}" = "unknown" ] && [ -n "${SUPERVISOR_TOKEN:-}" ]; then
-    echo "[pymc-repeater-ha] attempting Supervisor API fallback via ${SUPERVISOR_ADDON_INFO_URL}"
-    TEMP_CONFIG_FILE="$(mktemp)"
-    python3 - "${SUPERVISOR_ADDON_INFO_URL}" "${SUPERVISOR_TOKEN}" "${TEMP_CONFIG_FILE}" <<'PY'
-import json
-import pathlib
-import sys
-import urllib.request
-
-url = sys.argv[1]
-token = sys.argv[2]
-output_path = pathlib.Path(sys.argv[3])
-
-request = urllib.request.Request(
-    url,
-    headers={
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json",
-    },
-)
-
-try:
-    with urllib.request.urlopen(request, timeout=10) as response:
-        payload = json.loads(response.read().decode("utf-8"))
-except Exception as exc:
-    print(f"[pymc-repeater-ha] Supervisor API fallback failed: {exc}")
-    raise SystemExit(0)
-
-data = payload.get("data") if isinstance(payload, dict) else None
-options = data.get("options") if isinstance(data, dict) else None
-config_yaml = options.get("config_yaml", "") if isinstance(options, dict) else ""
-
-if not isinstance(config_yaml, str) or not config_yaml.strip():
-    print("[pymc-repeater-ha] Supervisor API options did not contain a non-empty config_yaml value")
-    raise SystemExit(0)
-
-output_path.write_text(config_yaml.rstrip("\n") + "\n", encoding="utf-8")
-PY
-
-    if [ -s "${TEMP_CONFIG_FILE}" ]; then
-        if [ ! -f "${PERSISTENT_CONFIG_FILE}" ]; then
-            cp "${TEMP_CONFIG_FILE}" "${PERSISTENT_CONFIG_FILE}"
-            echo "[pymc-repeater-ha] created ${PERSISTENT_CONFIG_FILE} from Supervisor API options"
-            CONFIG_SOURCE="Supervisor API options"
-        elif ! cmp -s "${TEMP_CONFIG_FILE}" "${PERSISTENT_CONFIG_FILE}"; then
-            cp "${TEMP_CONFIG_FILE}" "${PERSISTENT_CONFIG_FILE}"
-            echo "[pymc-repeater-ha] updated ${PERSISTENT_CONFIG_FILE} from Supervisor API options"
-            CONFIG_SOURCE="Supervisor API options"
-        else
-            CONFIG_SOURCE="Supervisor API options"
-        fi
-    fi
-
-    rm -f "${TEMP_CONFIG_FILE}"
+if [ ! -f "${PERSISTENT_CONFIG_DIR}/identity.key" ] && [ -f "${LEGACY_IDENTITY_FILE}" ]; then
+    cp "${LEGACY_IDENTITY_FILE}" "${PERSISTENT_CONFIG_DIR}/identity.key"
+    chmod 600 "${PERSISTENT_CONFIG_DIR}/identity.key" || true
+    echo "[pymc-repeater-ha] migrated legacy identity key into ${PERSISTENT_CONFIG_DIR}"
 fi
 
 if [ ! -f "${PERSISTENT_CONFIG_FILE}" ]; then

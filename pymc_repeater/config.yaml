@@ -1,5 +1,5 @@
 name: "pyMC Repeater Dev"
-version: "0.1.7"
+version: "0.1.8"
 slug: "pymc_repeater"
 description: "Development-tracking pyMC Repeater add-on for Home Assistant"
 url: "https://github.com/pyMC-dev/pyMC_Repeater"
@@ -24,72 +24,5 @@ map:
 apparmor: false
 full_access: true
 init: true
-options:
-  config_yaml: |-
-    # In Home Assistant, click the three dots and choose "Edit in YAML".
-    # Adjust the radio and GPIO settings for your board before production use.
-
-    radio_type: sx1262
-
-    repeater:
-      node_name: "mesh-repeater-01"
-      latitude: 0.0
-      longitude: 0.0
-      owner_info: ""
-      send_advert_interval_hours: 10
-      allow_discovery: true
-      security:
-        admin_password: "change-me-admin"
-        guest_password: "change-me-guest"
-        allow_read_only: false
-
-    mesh:
-      unscoped_flood_allow: true
-      path_hash_mode: 0
-      loop_detect: minimal
-
-    radio:
-      frequency: 915000000
-      tx_power: 14
-      bandwidth: 62500
-      spreading_factor: 8
-      coding_rate: 8
-      preamble_length: 17
-      sync_word: 13380
-      implicit_header: false
-
-    sx1262:
-      bus_id: 0
-      cs_id: 0
-      cs_pin: 21
-      reset_pin: 18
-      busy_pin: 20
-      irq_pin: 16
-      txen_pin: -1
-      rxen_pin: -1
-      txled_pin: -1
-      rxled_pin: -1
-      use_dio3_tcxo: false
-      dio3_tcxo_voltage: 1.8
-      use_dio2_rf: false
-      is_waveshare: false
-
-    storage:
-      storage_dir: "/var/lib/pymc_repeater"
-
-    # pyMC TCP modem example:
-    # pymc_tcp:
-    #   host: "pymc-3e2834.local"
-    #   port: 5055
-    #   token: ""
-    #   connect_timeout: 5.0
-    #   lbt_enabled: true
-    #   lbt_max_attempts: 5
-    #
-    # KISS modem example:
-    # radio_type: kiss
-    # kiss:
-    #   port: "/dev/ttyUSB0"
-    #   baud_rate: 9600
-schema:
-  config_yaml: str
+options: {}
+schema: {}

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.8
+
+- Move add-on config to `/config/pymc-repeater/config.yaml`
+- Seed and preserve a real file-based config instead of syncing from add-on options
+- Migrate legacy `/config/config.yaml` and `/config/identity.key` into the new folder
+
 ## 0.1.7
 
 - Fallback to the Supervisor self-info API when `/data/options.json` is absent
