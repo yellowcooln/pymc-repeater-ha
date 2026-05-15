@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.11
+
+- Track upstream `pymcdev/pymc-repeater:dev` automatically via GitHub Actions
+- Record the upstream image revision and generate changelog entries from the upstream compare diff
+
 ## 0.1.10
 
 - Add an informational config tab entry showing the add-on config file location
