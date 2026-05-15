@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.9
+
+- Remove the extra nested `pymc-repeater/` directory inside the add-on config mount
+- Migrate nested config and identity files back to `/config/config.yaml` and `/config/identity.key`
+- Refresh the bundled example config from the current upstream `config.yaml.example`
+
 ## 0.1.8
 
 - Move add-on config to `/config/pymc-repeater/config.yaml`

@@ -8,39 +8,37 @@ the pyMC Repeater runtime configuration in the add-on config directory.
 This is the development-tracking add-on. It is intentionally pinned to the
 upstream `:dev` image, not a stable release image.
 
-Current upstream support in this add-on image is limited to the radio backends
-present in `pyMC_Repeater` itself, such as `sx1262`, `sx1262_ch341`, and
-`kiss`. A `pymc_tcp` backend is not currently present in the wrapped upstream
-image.
+Current upstream support in this add-on image follows the `pyMC_Repeater`
+project itself, including newer backends such as `pymc_tcp` when they are
+present in the published `:dev` image.
 
 The first time the add-on starts it will create:
 
-- `/config/pymc-repeater/config.yaml`
-- `/config/pymc-repeater/identity.key` when pyMC Repeater generates its node identity
+- `/config/config.yaml`
+- `/config/identity.key` when pyMC Repeater generates its node identity
 - `/var/lib/pymc_repeater` for runtime data
 
-Inside Home Assistant, `/config` above is the add-on config mount. The exact
-host path is managed by Home Assistant, but `pymc-repeater/` beneath it is the
-persistent config folder for this add-on.
+Inside Home Assistant, `/config` above is the add-on config mount. On the host,
+this add-on config lives in its own `addon_config` folder, not in Home
+Assistant's main `/config`.
 
 ## Install
 
 1. Add this repository to Home Assistant.
 2. Install the `pyMC Repeater Dev` add-on.
 3. Open your Home Assistant file editor, such as Studio Code Server.
-4. Edit `/config/pymc-repeater/config.yaml` to match your hardware.
+4. Edit the add-on config file `config.yaml` in the add-on's own config folder.
 5. Start the add-on and open the web UI on port `8000`.
 
 ## Configuration
 
-This add-on uses a real YAML file at `/config/pymc-repeater/config.yaml`.
+This add-on uses a real YAML file at `/config/config.yaml`.
 The add-on seeds that file on first start and then treats it as the single
 source of truth. If pyMC Repeater updates the file itself, those changes are
 preserved across restarts.
 
-If you are upgrading from an older revision of this add-on that stored
-`config.yaml` directly under `/config`, startup will migrate that legacy file
-into `/config/pymc-repeater/config.yaml`.
+If you are upgrading from the previous nested-layout revision of this add-on,
+startup will migrate `/config/pymc-repeater/config.yaml` into `/config/config.yaml`.
 
 The bundled starter config is aimed at an SX1262 SPI radio. At minimum, review:
 
@@ -59,8 +57,8 @@ If you are using a KISS modem instead of SPI radio hardware, switch
 `radio_type` to `kiss` and configure the `kiss` section instead.
 
 When editing in the Home Assistant `Configuration` tab, remember that you are
-not editing the repeater YAML anymore. Use the file in
-`/config/pymc-repeater/config.yaml` instead.
+not editing the repeater YAML anymore. Use the file at `/config/config.yaml`
+inside the add-on config folder instead.
 
 ## Hardware Access
 
