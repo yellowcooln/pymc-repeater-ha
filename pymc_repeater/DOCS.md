@@ -18,9 +18,9 @@ The first time the add-on starts it will create:
 - `/config/identity.key` when pyMC Repeater generates its node identity
 - `/var/lib/pymc_repeater` for runtime data
 
-Inside Home Assistant, `/config` above is the add-on config mount. On the host,
-this add-on config lives in its own `addon_config` folder, not in Home
-Assistant's main `/config`.
+Inside the add-on, `/config` is the add-on's private config mount. On the host,
+those files are stored in the add-on's own `addon_config` directory, separate
+from Home Assistant's main `/config` folder.
 
 ## Install
 
