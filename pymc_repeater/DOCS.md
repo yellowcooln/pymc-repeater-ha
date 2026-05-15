@@ -38,9 +38,6 @@ The add-on seeds that file on first start and then treats it as the single
 source of truth. If pyMC Repeater updates the file itself, those changes are
 preserved across restarts.
 
-If you are upgrading from the previous nested-layout revision of this add-on,
-startup will migrate `/config/pymc-repeater/config.yaml` into `/config/config.yaml`.
-
 The bundled starter config is aimed at an SX1262 SPI radio. At minimum, review:
 
 - `repeater.node_name`
@@ -54,12 +51,9 @@ The bundled starter config is aimed at an SX1262 SPI radio. At minimum, review:
 - `sx1262.busy_pin`
 - `sx1262.irq_pin`
 
-If you are using a KISS modem instead of SPI radio hardware, switch
-`radio_type` to `kiss` and configure the `kiss` section instead.
-
-When editing in the Home Assistant `Configuration` tab, remember that you are
-not editing the repeater YAML anymore. Use the file at `/config/config.yaml`
-inside the add-on config folder instead.
+Other radio backends supported by the upstream `:dev` image, such as
+`pymc_tcp`, should be configured directly in `config.yaml` using the upstream
+schema.
 
 ## Hardware Access
 
