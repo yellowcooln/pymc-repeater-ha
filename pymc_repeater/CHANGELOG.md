@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.6
+
+- Log whether the add-on options file exists and whether `config_yaml` is empty
+- Include effective `node_name` with the startup config diagnostic
+
 ## 0.1.5
 
 - Log the effective add-on config source and parsed `radio_type` at startup

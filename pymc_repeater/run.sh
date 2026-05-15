@@ -13,6 +13,7 @@ mkdir -p "${PERSISTENT_CONFIG_DIR}"
 mkdir -p "${DATA_DIR}"
 
 if [ -f "${UI_OPTIONS_FILE}" ]; then
+    echo "[pymc-repeater-ha] found add-on options file at ${UI_OPTIONS_FILE}"
     TEMP_CONFIG_FILE="$(mktemp)"
     python3 - "${UI_OPTIONS_FILE}" "${TEMP_CONFIG_FILE}" <<'PY'
 import json
@@ -29,6 +30,7 @@ except FileNotFoundError:
 
 config_yaml = options.get("config_yaml", "")
 if not isinstance(config_yaml, str) or not config_yaml.strip():
+    print("[pymc-repeater-ha] add-on options did not contain a non-empty config_yaml value")
     raise SystemExit(0)
 
 output_path.write_text(config_yaml.rstrip("\n") + "\n", encoding="utf-8")
@@ -49,6 +51,8 @@ PY
     fi
 
     rm -f "${TEMP_CONFIG_FILE}"
+else
+    echo "[pymc-repeater-ha] no add-on options file present at ${UI_OPTIONS_FILE}"
 fi
 
 if [ ! -f "${PERSISTENT_CONFIG_FILE}" ]; then
@@ -72,15 +76,17 @@ config_path = pathlib.Path(sys.argv[1])
 config_source = sys.argv[2]
 
 radio_type = "unknown"
+node_name = "unknown"
 try:
     config = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
     radio_type = str(config.get("radio_type", "missing"))
+    node_name = str(config.get("repeater", {}).get("node_name", "missing"))
 except Exception as exc:
     print(f"[pymc-repeater-ha] failed to inspect effective config: {exc}")
 else:
     print(
         f"[pymc-repeater-ha] effective config source: {config_source}; "
-        f"radio_type={radio_type}; path={config_path}"
+        f"radio_type={radio_type}; node_name={node_name}; path={config_path}"
     )
 PY
 
