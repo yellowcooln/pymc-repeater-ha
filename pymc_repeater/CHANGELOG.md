@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.5
+
+- Log the effective add-on config source and parsed `radio_type` at startup
+- Document that the wrapped upstream image does not currently provide `pymc_tcp`
+
 ## 0.1.4
 
 - Rename the visible add-on to `pyMC Repeater Dev`

@@ -7,6 +7,7 @@ TEMPLATE_CONFIG_FILE="/usr/share/pymc-repeater/config.yaml.example"
 RUNTIME_CONFIG_DIR="/etc/pymc_repeater"
 DATA_DIR="/var/lib/pymc_repeater"
 UI_OPTIONS_FILE="/data/options.json"
+CONFIG_SOURCE="unknown"
 
 mkdir -p "${PERSISTENT_CONFIG_DIR}"
 mkdir -p "${DATA_DIR}"
@@ -37,9 +38,13 @@ PY
         if [ ! -f "${PERSISTENT_CONFIG_FILE}" ]; then
             cp "${TEMP_CONFIG_FILE}" "${PERSISTENT_CONFIG_FILE}"
             echo "[pymc-repeater-ha] created ${PERSISTENT_CONFIG_FILE} from add-on options"
+            CONFIG_SOURCE="add-on options"
         elif ! cmp -s "${TEMP_CONFIG_FILE}" "${PERSISTENT_CONFIG_FILE}"; then
             cp "${TEMP_CONFIG_FILE}" "${PERSISTENT_CONFIG_FILE}"
             echo "[pymc-repeater-ha] updated ${PERSISTENT_CONFIG_FILE} from add-on options"
+            CONFIG_SOURCE="add-on options"
+        else
+            CONFIG_SOURCE="add-on options"
         fi
     fi
 
@@ -49,11 +54,34 @@ fi
 if [ ! -f "${PERSISTENT_CONFIG_FILE}" ]; then
     cp "${TEMPLATE_CONFIG_FILE}" "${PERSISTENT_CONFIG_FILE}"
     echo "[pymc-repeater-ha] created ${PERSISTENT_CONFIG_FILE} from bundled template"
+    CONFIG_SOURCE="bundled template"
 fi
 
 if [ "$(readlink "${RUNTIME_CONFIG_DIR}" 2>/dev/null || true)" != "${PERSISTENT_CONFIG_DIR}" ]; then
     rm -rf "${RUNTIME_CONFIG_DIR}"
     ln -s "${PERSISTENT_CONFIG_DIR}" "${RUNTIME_CONFIG_DIR}"
 fi
+
+python3 - "${PERSISTENT_CONFIG_FILE}" "${CONFIG_SOURCE}" <<'PY'
+import pathlib
+import sys
+
+import yaml
+
+config_path = pathlib.Path(sys.argv[1])
+config_source = sys.argv[2]
+
+radio_type = "unknown"
+try:
+    config = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
+    radio_type = str(config.get("radio_type", "missing"))
+except Exception as exc:
+    print(f"[pymc-repeater-ha] failed to inspect effective config: {exc}")
+else:
+    print(
+        f"[pymc-repeater-ha] effective config source: {config_source}; "
+        f"radio_type={radio_type}; path={config_path}"
+    )
+PY
 
 exec python3 -m repeater.main --config "${RUNTIME_CONFIG_DIR}/config.yaml"

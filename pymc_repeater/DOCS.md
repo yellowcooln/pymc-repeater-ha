@@ -8,6 +8,11 @@ the pyMC Repeater runtime configuration in the add-on config directory.
 This is the development-tracking add-on. It is intentionally pinned to the
 upstream `:dev` image, not a stable release image.
 
+Current upstream support in this add-on image is limited to the radio backends
+present in `pyMC_Repeater` itself, such as `sx1262`, `sx1262_ch341`, and
+`kiss`. A `pymc_tcp` backend is not currently present in the wrapped upstream
+image.
+
 The first time the add-on starts it will create:
 
 - `/config/config.yaml`
