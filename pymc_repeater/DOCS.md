@@ -1,9 +1,12 @@
-# Home Assistant Add-on: pyMC Repeater
+# Home Assistant Add-on: pyMC Repeater Dev
 
 ## About
 
 This add-on wraps the upstream `pymcdev/pymc-repeater:dev` container and keeps
 the pyMC Repeater runtime configuration in the add-on config directory.
+
+This is the development-tracking add-on. It is intentionally pinned to the
+upstream `:dev` image, not a stable release image.
 
 The first time the add-on starts it will create:
 
@@ -18,7 +21,7 @@ for this add-on.
 ## Install
 
 1. Add this repository to Home Assistant.
-2. Install the `pyMC Repeater` add-on.
+2. Install the `pyMC Repeater Dev` add-on.
 3. Open the add-on `Configuration` tab.
 4. Edit the `config_yaml` field to match your hardware.
 5. Save the add-on configuration.

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4
+
+- Rename the visible add-on to `pyMC Repeater Dev`
+- Document that this repository tracks the upstream `:dev` image
+
 ## 0.1.3
 
 - Update starter config header to direct users to the three-dot "Edit in YAML" view
