@@ -19,17 +19,20 @@ for this add-on.
 
 1. Add this repository to Home Assistant.
 2. Install the `pyMC Repeater` add-on.
-3. Start the add-on once so it seeds `config.yaml`.
-4. Stop the add-on.
-5. Edit `config.yaml` in the add-on config folder to match your hardware.
-6. Start the add-on again and open the web UI on port `8000`.
+3. Open the add-on `Configuration` tab.
+4. Edit the `config_yaml` field to match your hardware.
+5. Save the add-on configuration.
+6. Start the add-on and open the web UI on port `8000`.
 
 ## Configuration
 
-This add-on uses a file-based configuration instead of mirroring the full
-upstream YAML into Home Assistant options. `pyMC_Repeater` has a large nested
-radio configuration, and keeping it as YAML is the most maintainable first
-version.
+This add-on uses one full YAML field in the Home Assistant `Configuration` tab.
+On startup, the add-on mirrors that field into `/config/config.yaml` and then
+launches `pyMC_Repeater` with that file.
+
+The UI field is the source of truth. If the config file is edited elsewhere,
+the next add-on start will overwrite it with the value saved in the
+`Configuration` tab.
 
 The bundled starter config is aimed at an SX1262 SPI radio. At minimum, review:
 

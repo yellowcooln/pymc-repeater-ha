@@ -1,0 +1,6 @@
+configuration:
+  config_yaml:
+    name: Repeater Config YAML
+    description: >-
+      Full pyMC Repeater YAML configuration. This value is mirrored to
+      /config/config.yaml each time the add-on starts.
