@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3
+
+- Update starter config header to direct users to the three-dot "Edit in YAML" view
+
 ## 0.1.2
 
 - Add commented `pymc_tcp` example to the default configuration template

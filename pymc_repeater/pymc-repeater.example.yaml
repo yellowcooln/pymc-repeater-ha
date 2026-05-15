@@ -1,4 +1,4 @@
-# pyMC Repeater starter configuration for the Home Assistant add-on.
+# In Home Assistant, click the three dots and choose "Edit in YAML".
 # Adjust the radio and GPIO settings for your board before production use.
 
 radio_type: sx1262
