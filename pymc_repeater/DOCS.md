@@ -58,12 +58,8 @@ schema.
 ## Hardware Access
 
 This add-on currently runs with `full_access: true` and AppArmor disabled.
-That is deliberate for the first version because pyMC Repeater may need a mix
-of SPI, GPIO, USB, and serial access depending on the attached radio hardware.
-
-If you want a tighter security model later, reduce this to specific Home
-Assistant device and privilege mappings once the required hardware matrix is
-better pinned down.
+That is deliberate so pyMC Repeater can access SPI, GPIO, USB, and serial
+hardware used by supported radio setups.
 
 ## Web UI
 
