@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.7
+
+- Fallback to the Supervisor self-info API when `/data/options.json` is absent
+- Distinguish `existing persistent config` from the bundled template in startup logs
+
 ## 0.1.6
 
 - Log whether the add-on options file exists and whether `config_yaml` is empty

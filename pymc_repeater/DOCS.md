@@ -42,6 +42,10 @@ The UI field is the source of truth. If the config file is edited elsewhere,
 the next add-on start will overwrite it with the value saved in the
 `Configuration` tab.
 
+On current Home Assistant releases this add-on first checks `/data/options.json`
+for the saved UI options and then falls back to the Supervisor self-info API if
+that file is not present.
+
 The bundled starter config is aimed at an SX1262 SPI radio. At minimum, review:
 
 - `repeater.node_name`
