@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.10
+
+- Add an informational config tab entry showing the add-on config file location
+
 ## 0.1.9
 
 - Remove the extra nested `pymc-repeater/` directory inside the add-on config mount
