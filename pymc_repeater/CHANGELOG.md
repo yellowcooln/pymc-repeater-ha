@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.13
+
+- Sync upstream `pymcdev/pymc-repeater:dev` to `ce1acab`
+- Upstream diff: https://github.com/pyMC-dev/pyMC_Repeater/compare/4f278f121f8c915a14f831b1f34af30aab520d72...ce1acabd342fec10df4beedcf9fc3e47b66b5ac8
+- Included upstream commits:
+  - fix: parse sync_word as integer in get_radio_for_board function
+
 ## 0.1.12
 
 - Sync upstream `pymcdev/pymc-repeater:dev` to `4f278f1`
