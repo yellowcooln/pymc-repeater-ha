@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.14
+
+- Sync upstream `pymcdev/pymc-repeater:dev` to `baec25b`
+- Upstream diff: https://github.com/pyMC-dev/pyMC_Repeater/compare/ce1acabd342fec10df4beedcf9fc3e47b66b5ac8...baec25b7bb57064e7cb9e3b545aa911dfd789f6f
+- Included upstream commits:
+  - Dispatch add-on sync after Docker publish
+  - Derive Docker dev version from git metadata
+  - Merge pull request #247 from yellowcooln/addon-sync-workflow
+
 ## 0.1.13
 
 - Sync upstream `pymcdev/pymc-repeater:dev` to `ce1acab`
